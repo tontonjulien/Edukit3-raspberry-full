@@ -1,7 +1,6 @@
-# CamJam EduKit 3 - Robotics
-# Worksheet 7 – Controlling the motors with PWM
-import RPi.GPIO as GPIO # Import the GPIO Library
-import time # Import the Time library
+import RPi.GPIO as GPIO
+import time
+
 # Set the GPIO modes
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
@@ -34,34 +33,34 @@ pwmMotorBForwards.start(Stop)
 pwmMotorBBackwards.start(Stop)
 # Turn all motors off
 def StopMotors():
-pwmMotorAForwards.ChangeDutyCycle(Stop)
-pwmMotorABackwards.ChangeDutyCycle(Stop)
-pwmMotorBForwards.ChangeDutyCycle(Stop)
-pwmMotorBBackwards.ChangeDutyCycle(Stop)
+    pwmMotorAForwards.ChangeDutyCycle(Stop)
+    pwmMotorABackwards.ChangeDutyCycle(Stop)
+    pwmMotorBForwards.ChangeDutyCycle(Stop)
+    pwmMotorBBackwards.ChangeDutyCycle(Stop)
 # Turn both motors forwards
 def Forwards():
-pwmMotorAForwards.ChangeDutyCycle(DutyCycleA)
-pwmMotorABackwards.ChangeDutyCycle(Stop)
-pwmMotorBForwards.ChangeDutyCycle(DutyCycleB)
-pwmMotorBBackwards.ChangeDutyCycle(Stop)
+    pwmMotorAForwards.ChangeDutyCycle(DutyCycleA)
+    pwmMotorABackwards.ChangeDutyCycle(Stop)
+    pwmMotorBForwards.ChangeDutyCycle(DutyCycleB)
+    pwmMotorBBackwards.ChangeDutyCycle(Stop)
 # Turn both motors backwards
 def Backwards():
-pwmMotorAForwards.ChangeDutyCycle(Stop)
-pwmMotorABackwards.ChangeDutyCycle(DutyCycleA)
-pwmMotorBForwards.ChangeDutyCycle(Stop)
-pwmMotorBBackwards.ChangeDutyCycle(DutyCycleB)
+    pwmMotorAForwards.ChangeDutyCycle(Stop)
+    pwmMotorABackwards.ChangeDutyCycle(DutyCycleA)
+    pwmMotorBForwards.ChangeDutyCycle(Stop)
+    pwmMotorBBackwards.ChangeDutyCycle(DutyCycleB)
 # Turn left
 def Left():
-pwmMotorAForwards.ChangeDutyCycle(Stop)
-pwmMotorABackwards.ChangeDutyCycle(DutyCycleA)
-pwmMotorBForwards.ChangeDutyCycle(DutyCycleB)
-pwmMotorBBackwards.ChangeDutyCycle(Stop)
+    pwmMotorAForwards.ChangeDutyCycle(Stop)
+    pwmMotorABackwards.ChangeDutyCycle(DutyCycleA)
+    pwmMotorBForwards.ChangeDutyCycle(DutyCycleB)
+    pwmMotorBBackwards.ChangeDutyCycle(Stop)
 # Turn Right
 def Right():
-pwmMotorAForwards.ChangeDutyCycle(DutyCycleA)
-pwmMotorABackwards.ChangeDutyCycle(Stop)
-pwmMotorBForwards.ChangeDutyCycle(Stop)
-pwmMotorBBackwards.ChangeDutyCycle(DutyCycleB)
+    pwmMotorAForwards.ChangeDutyCycle(DutyCycleA)
+    pwmMotorABackwards.ChangeDutyCycle(Stop)
+    pwmMotorBForwards.ChangeDutyCycle(Stop)
+    pwmMotorBBackwards.ChangeDutyCycle(DutyCycleB)
 # Your code to control the robot goes below this line
 Forwards()
 time.sleep(1) # Pause for 1 second
