@@ -3,7 +3,6 @@
 
 import RPi.GPIO as GPIO # Import the GPIO Library
 import time # Import the Time library
-import os
 
 # Set the GPIO modes
 GPIO.setmode(GPIO.BCM)
@@ -55,41 +54,23 @@ def Right():
     GPIO.output(pinMotorBBackwards, 0)
 
 StopMotors()
+import sys, termios, tty, os
 
-# Credit for this part must go to:
-# Author : Matt Hawkins (adapted by Michael Horne)
-# http://www.raspberrypi-spy.co.uk/?p=1101
-# -----------------------
-# Import required Python libraries
-# -----------------------
-import cwiid
+def getch():
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    try:
+        tty.setraw(sys.stdin.fileno())
+        ch = sys.stdin.read(1)
+
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+    return ch
 
 PIN_LED = 25
 GPIO.setup(PIN_LED, GPIO.OUT)
 GPIO.output(PIN_LED, 0)
-
-button_delay = 0.1
-
-print 'Press 1 + 2 on your Wii Remote now ...'
-GPIO.output(PIN_LED, 1)
-time.sleep(1)
-
-# Connect to the Wii Remote. If it times out
-# then quit.
-try:
-    wii=cwiid.Wiimote()
-    GPIO.output(PIN_LED, 0)
-
-except RuntimeError:
-    print "Error opening wiimote connection"
-    GPIO.output(PIN_LED, 0)
-    # Uncomment this line to shutdown the Pi if pairing fails
-    #os.system("sudo halt")
-    quit()
-
-print 'Wii Remote connected...\n'
-print 'Press some buttons!\n'
-print 'Press PLUS and MINUS together to disconnect and quit.\n'
+button_delay = 0.2
 
 for x in range(0,3):
     GPIO.output(PIN_LED, 1)
@@ -97,46 +78,31 @@ for x in range(0,3):
     GPIO.output(PIN_LED, 0)
     time.sleep(0.25)
 
-wii.rpt_mode = cwiid.RPT_BTN
-
 while True:
+    char = getch()
 
-    buttons = wii.state['buttons']
+    if (char == "q"):
+        StopMotors()
+        exit(0)  
 
-    # If Plus and Minus buttons pressed
-    # together then rumble and quit.
-    if (buttons - cwiid.BTN_PLUS - cwiid.BTN_MINUS == 0):  
-        print '\nClosing connection ...'
-        wii.rumble = 1
-        GPIO.output(PIN_LED, 1)
-        time.sleep(1)
-        wii.rumble = 0
-        GPIO.output(PIN_LED, 0)
-        os.system("sudo halt")
-        exit(wii)
-  
-    # Check if other buttons are pressed by
-    # doing a bitwise AND of the buttons number
-    # and the predefined constant for that button.
-    if (buttons & cwiid.BTN_LEFT):
+    if (char == "a"):
         print 'Left pressed'
         Left()
-        time.sleep(button_delay)         
+        time.sleep(button_delay)
 
-    elif(buttons & cwiid.BTN_RIGHT):
+    if (char == "d"):
         print 'Right pressed'
         Right()
         time.sleep(button_delay)          
 
-    elif (buttons & cwiid.BTN_UP):
+    elif (char == "w"):
         print 'Up pressed' 
         Forwards()       
         time.sleep(button_delay)          
     
-    elif (buttons & cwiid.BTN_DOWN):
+    elif (char == "s"):
         print 'Down pressed'      
         Backwards()
         time.sleep(button_delay)  
     
-    else:
-        StopMotors()
+    StopMotors()
